@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة معالجة الامتحانات - Premium Exam Tool</title>
+    <meta name="description" content="أداة متقدمة لمعالجة وتحليل نتائج الامتحانات من ملفات Excel">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Modern Header -->
+        <header class="app-header">
+            <div class="logo-container">
+                <div class="logo-badge">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z">
+                        </path>
+                        <path
+                            d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z">
+                        </path>
+                        <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
+                        <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
+                    </svg>
+                </div>
+                <div class="app-title">
+                    <h1>معالج الامتحانات الذكي</h1>
+                    <p>Smart Exam Processor & Analytics</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tool Actions Bar -->
+        <div class="glass-card"
+            style="padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 700; color: var(--text-dim);">لوحة التحكم</div>
+            <button class="btn btn-ghost" id="resetBtn">
+                <span>🔄</span> إعادة تعيين النظام
+            </button>
+        </div>
+
+        <main>
+            <!-- Step 1: Upload -->
+            <section class="glass-card" id="step1">
+                <div class="card-header">
+                    <div class="step-indicator">01</div>
+                    <div class="card-title">
+                        <h2>رفع ملفات البيانات</h2>
+                        <p>يدعم ملفات .xlsx و .xls المتعددة</p>
+                    </div>
+                </div>
+                <div class="upload-wrapper">
+                    <div class="upload-area" id="uploadZone">
+                        <div class="upload-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3>اسحب الملفات هنا أو انقر للاختيار</h3>
+                        <p>يمكنك رفع عدة ملفات في وقت واحد</p>
+                        <input type="file" id="fileInput" accept=".xlsx, .xls" multiple hidden>
+                        <button class="upload-btn" id="selectFilesBtn">اختر الملفات</button>
+                    </div>
+                    <div class="files-grid" id="filesList"></div>
+                </div>
+            </section>
+
+            <!-- Step 2: Settings -->
+            <section class="glass-card" id="step2" style="display: none;">
+                <div class="card-header">
+                    <div class="step-indicator">02</div>
+                    <div class="card-title">
+                        <h2>تخصيص المعايير</h2>
+                        <p>تأكد من مطابقة أسماء الأعمدة في ملفاتك</p>
+                    </div>
+                </div>
+                <div class="config-grid">
+                    <div class="input-group">
+                        <label><span>🕒</span> اسم عمود الطابع الزمني</label>
+                        <input type="text" id="timestampCol" value="طابع زمني">
+                    </div>
+                    <div class="input-group">
+                        <label><span>👤</span> اسم عامود الاسم الكامل</label>
+                        <input type="text" id="nameCol" value="الاسم الكامل">
+                    </div>
+                    <div class="input-group">
+                        <label><span>📊</span> اسم عامود النتيجة</label>
+                        <input type="text" id="scoreCol" value="النتيجة">
+                    </div>
+                    <div class="input-group">
+                        <label><span>🏫</span> اسم عامود المدرسة (اختياري)</label>
+                        <input type="text" id="schoolCol" value="المدرسة">
+                    </div>
+                    <div class="input-group">
+                        <label><span>📝</span> الحد الأدنى لأجزاء القسم</label>
+                        <input type="number" id="minNameParts" value="2" min="1">
+                    </div>
+                    <div class="input-group">
+                        <label><span>🎯</span> الحد الأدنى للامتحانات</label>
+                        <input type="number" id="minExams" value="1" min="1">
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button class="btn btn-main" id="processBtn" style="padding: 1.2rem 3rem; font-size: 1.1rem;">
+                        <span>⚙️</span> بدء المعالجة الذكية
+                    </button>
+                </div>
+            </section>
+
+            <!-- Step 3: Loading -->
+            <section class="glass-card" id="step3" style="display: none;">
+                <div class="process-loader">
+                    <div class="orbital-spinner"></div>
+                    <div id="processingStatus" style="text-align: center;">
+                        <h3 style="margin-bottom: 0.5rem;">جاري التحليل...</h3>
+                        <p style="color: var(--text-dim);">نقوم الآن بمعالجة البيانات وحساب التصنيفات</p>
+                    </div>
+                    <div
+                        style="width: 100%; max-width: 400px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
+                        <div id="progressFill"
+                            style="width: 0%; height: 100%; background: var(--primary); transition: width 0.3s ease;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Final Results -->
+            <section id="step4" style="display: none;">
+                <!-- Winner Spotlight -->
+                <div class="glass-card winner-card">
+                    <div class="trophy-glow">🏆</div>
+                    <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem;">بطل الامتحانات</h2>
+                    <div id="winnerInfo" style="margin-top: 1.5rem;"></div>
+                </div>
+
+                <!-- Global Stats -->
+                <div class="stats-grid" id="statsGrid"></div>
+
+                <!-- Detailed Rankings -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="step-indicator">🏅</div>
+                        <div class="card-title">
+                            <h3>تصنيف الأوائل (توب 15)</h3>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="topStudentsTable"></table>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="step-indicator">⚡</div>
+                        <div class="card-title">
+                            <h3>أسرع الطلاب (توب 10)</h3>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="fastestStudentsTable"></table>
+                    </div>
+                </div>
+
+                <!-- Export Zone -->
+                <div class="glass-card" style="text-align: center;">
+                    <h3 style="margin-bottom: 2rem;">📥 تصدير التقارير النهائية</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;"
+                        id="exportButtons"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer style="text-align: center; padding: 4rem 0; color: var(--text-muted); font-size: 0.9rem;">
+            <p style="margin-bottom: 0.5rem;">النظام الذكي لمعالجة الامتحانات &copy; 2026</p>
+            <p>Designed with ❤️ by <span style="color: var(--primary); font-weight: 800; letter-spacing: 0.5px;">Yazan
+                    Hijazi</span></p>
+        </footer>
+    </div>
+
+    <!-- Notifications -->
+    <div class="toast-area" id="toastContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
